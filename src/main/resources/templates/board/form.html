@@ -15,27 +15,29 @@
 
       <div class="container">
         <h1>Board</h1>
-        <div>count: <span th:text="${#lists.size(boards)}"></span></div>
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Title</th>
-              <th scope="col">Author</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="board : ${boards}">
-              <th th:text="${board.id}"></th>
-              <td><a th:href="@{/board/form(id=${board.id})}" th:text="${board.title}">Mark</a></td>
-              <td th:text="test">Otto</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="text-end">
-          <a class="btn btn-primary" th:href="@{/board/form}">Write</a>
-        </div>
+        <form th:action="@{/board/form}" th:object="${board}" method="POST">
+          <input type="hidden" th:field="*{id}"/>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" th:field="*{title}" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" class="form-control" id="title" placeholder="Title">
+            <div id="validationServerUsernameFeedback" class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+              title error
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content:
+              
+            </label>
+            <textarea class="form-control" th:field="*{content}" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'" id="content" rows="3"></textarea>
+            <div id="" class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">
+              content error
+            </div>
+          </div>
+          <div class="text-end">
+            <a class="btn btn-primary" th:href="@{/board/list}">Cancel</a>
+            <button class="btn btn-primary" >Write</button>
+          </div>
+        </form>
       </div>
 
 

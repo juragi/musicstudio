@@ -1,0 +1,15 @@
+
+
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/mydb
+    username: mydbuser
+    password: 1234
+    
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
