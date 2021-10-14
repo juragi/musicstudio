@@ -5,9 +5,12 @@ spring:
     cache: false
   datasource:
     driverClassName: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://127.0.0.1:3306/mydb
-    username: mydbuser
-    password: 1234
+    # url: jdbc:mariadb://127.0.0.1:3306/mydb
+    url: ${JawsDB_URL}
+    # username: mydbuser
+    username: ${JawsDB_USER}
+    # password: 1234
+    password: ${JawsDB_PASSWORD}
     
   jpa:
     hibernate:
