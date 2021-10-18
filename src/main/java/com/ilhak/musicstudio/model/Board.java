@@ -2,6 +2,8 @@ package com.ilhak.musicstudio.model;
 
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Data
+@Getter
+@Setter
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +24,7 @@ public class Board {
     @NotNull
     @Size(min=2, max=30, message="제목은 2자 이상, 30자 이하입니다.")
     private String title;
+
+    @NotNull
     private String content;
 }
