@@ -1,7 +1,10 @@
 package com.ilhak.musicstudio;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ilhak.musicstudio.model.YoutubeResponse;
 import com.ilhak.musicstudio.service.BoardService;
 
 import org.junit.jupiter.api.Test;
@@ -24,8 +27,12 @@ class MusicstudioApplicationTests {
 		logger.info("{} haha", "test");
 		try {
 			
-			String jsonString = boardService.searchYoutube("avicii");
-			logger.info("search result: {}", jsonString);
+			YoutubeResponse response = boardService.searchYoutube("avicii", "CAIQAA");
+			
+			//logger.info("search result: {}", jsonString);
+			//ObjectMapper mapper = new ObjectMapper();
+			//YoutubeResponse map = mapper.readValue(jsonString, YoutubeResponse.class);
+			//logger.info("map: {}", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

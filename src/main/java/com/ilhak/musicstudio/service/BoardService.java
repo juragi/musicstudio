@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ilhak.musicstudio.model.YoutubeResponse;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,7 +24,8 @@ public class BoardService {
     @Value("${youtubeapi.key}")
     private String youtubeApiKey;
 
-    public String searchYoutube(String searchKeyword) {
+    public YoutubeResponse searchYoutube(String searchKeyword, String pageToken) {
+        YoutubeResponse response = null;
         String apiUrl = "https://www.googleapis.com/youtube/v3/search";
         String jsonResult = null;
         try {
@@ -33,14 +37,17 @@ public class BoardService {
             nvps.add(new BasicNameValuePair("maxResults", "20"));
             nvps.add(new BasicNameValuePair("videoEmbeddable", "true"));
             nvps.add(new BasicNameValuePair("q", URLEncoder.encode(searchKeyword,"UTF-8")));
+            if(pageToken != null) nvps.add(new BasicNameValuePair("pageToken", pageToken));
             String parameters = String.join("&", nvps.stream().map(x-> x.getName() + "=" + x.getValue()).collect(Collectors.toList()));
             HttpGet httpGet = new HttpGet(apiUrl + "?" + parameters);
-            CloseableHttpResponse response = httpClient.execute(httpGet);
-            jsonResult = EntityUtils.toString(response.getEntity(), "UTF-8");
+            CloseableHttpResponse res = httpClient.execute(httpGet);
+            jsonResult = EntityUtils.toString(res.getEntity(), "UTF-8");
+            ObjectMapper mapper = new ObjectMapper();
+            response = mapper.readValue(jsonResult, YoutubeResponse.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jsonResult;
+        return response;
     }
 
 }
