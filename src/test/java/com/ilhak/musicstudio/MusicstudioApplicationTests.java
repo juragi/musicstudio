@@ -1,9 +1,5 @@
 package com.ilhak.musicstudio;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilhak.musicstudio.model.YoutubeResponse;
 import com.ilhak.musicstudio.service.BoardService;
 
