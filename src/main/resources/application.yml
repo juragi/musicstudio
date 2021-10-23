@@ -16,4 +16,4 @@ spring:
     show-sql: true
 
 youtubeapi:
-  key: ${Youtube_ApiKey}}
+  key: ${Youtube_ApiKey}
