@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ilhak.musicstudio.model.Board;
+import com.ilhak.musicstudio.model.User;
 import com.ilhak.musicstudio.model.YoutubeResponse;
+import com.ilhak.musicstudio.repository.BoardRepository;
+import com.ilhak.musicstudio.repository.UserRepository;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,14 +19,27 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
 
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Value("${youtubeapi.key}")
     private String youtubeApiKey;
+
+    public Board save(String userEmail, Board board){
+        User user = userRepository.findByEmail(userEmail);
+        board.setUser(user);
+        return boardRepository.save(board);
+    }
 
     public YoutubeResponse searchYoutube(String searchKeyword, String pageToken) {
         YoutubeResponse response = null;

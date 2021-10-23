@@ -1,7 +1,5 @@
 package com.ilhak.musicstudio.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import com.ilhak.musicstudio.helper.BoardValidator;
@@ -14,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +43,7 @@ public class BoardController {
         if(page < 1) page = 1;
         Pageable pageable = PageRequest.of(page - 1, 10);
         Page<Board> boards = boardRepository.findByTitleContainingOrContentContainingOrderByIdDesc(searchText, searchText, pageable);
-
+        
         Long perPage = 10L;
         Long start; // 1 -> 1,  9 -> 1,  10 -> 1, 11 -> 11, 20 -> 11
         Long last; // 1 -> 10, 9 -> 10, 10 -> 10, 11 -> 20, 20 -> 20
@@ -81,10 +79,13 @@ public class BoardController {
     }
 
     @PostMapping("/form")
-    public String formSubmit(@Valid Board board, BindingResult bindingResult) {
+    public String formSubmit(@Valid Board board, BindingResult bindingResult, Authentication authentication) {
         boardValidator.validate(board, bindingResult);
         if(bindingResult.hasErrors()) return "board/form";
-        boardRepository.save(board);
+        String userEmail = authentication.getName();
+        //SecurityContextHolder.getContext().getAuthentication();
+        //board.setUser(user);
+        boardService.save(userEmail, board);
         return "redirect:/board/list";
     }
 }
