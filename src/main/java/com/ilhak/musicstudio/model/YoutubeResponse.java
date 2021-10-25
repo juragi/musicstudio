@@ -2,6 +2,7 @@ package com.ilhak.musicstudio.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -38,8 +39,19 @@ public class YoutubeResponse {
     @Setter
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Snippet {
+        private String title;
         private String description;
         private Date publishedAt;
+        private Map<String, Thumbnail> thumbnails;
+    }
+
+    @Getter
+    @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Thumbnail {
+        private String url;
+        private int width;
+        private int height;
     }
 
     @Getter

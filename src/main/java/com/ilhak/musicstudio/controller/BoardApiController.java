@@ -3,7 +3,11 @@ package com.ilhak.musicstudio.controller;
 import java.util.List;
 
 import com.ilhak.musicstudio.model.Board;
+import com.ilhak.musicstudio.model.BoardView;
+import com.ilhak.musicstudio.model.YoutubeResponse;
+import com.ilhak.musicstudio.model.YoutubeSearch;
 import com.ilhak.musicstudio.repository.BoardRepository;
+import com.ilhak.musicstudio.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
@@ -24,6 +28,9 @@ public class BoardApiController {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    private BoardService boardService;
+
     @GetMapping("/boards")
     List<Board> all(@RequestParam(required = false, defaultValue = "") String title, 
             @RequestParam(required = false, defaultValue = "") String content) {
@@ -40,9 +47,12 @@ public class BoardApiController {
     }
 
     @GetMapping("/boards/{id}")
-    Board replaceBoard(@PathVariable Long id) {
-        return boardRepository.findById(id).orElse(null);
+    BoardView replaceBoard(@PathVariable Long id) {
+        Board board = boardRepository.findById(id).orElse(null);
+        return new BoardView(board);
     }
+
+    
 
     @PutMapping("/boards/{id}")
     Board write(@RequestBody Board newBoard, @PathVariable Long id) {
@@ -63,5 +73,9 @@ public class BoardApiController {
         boardRepository.deleteById(id);
     }
 
-
+    @PostMapping("/search-video")
+    public YoutubeResponse searchVideo(@RequestBody YoutubeSearch youtubeSearch) {
+        YoutubeResponse res = boardService.searchYoutube(youtubeSearch.getSearchKeyword(), youtubeSearch.getPageToken());
+        return res;
+    }
 }
