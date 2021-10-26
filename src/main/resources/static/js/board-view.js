@@ -17,7 +17,7 @@ var vm = new Vue({
                 this.username = board.username;
                 this.title = board.title;
                 this.content = board.content;
-                this.videoId = "58rk4DiNqzY";
+                this.videoId = board.videoId;
                 this.setupYoutubePlayer();
             });
         },
@@ -27,15 +27,15 @@ var vm = new Vue({
             return fetch(url).then(res=>res.json());
         },
         setupYoutubePlayer: function() {
-            
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
     }
 });
 
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 
 var player;
 function onYouTubeIframeAPIReady() {

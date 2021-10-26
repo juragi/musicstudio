@@ -10,6 +10,7 @@ public class BoardView {
     private String title;
     private String content;
     private String username;
+    private String videoId;
 
     public BoardView() {}
     public BoardView(Board board) {
@@ -17,5 +18,6 @@ public class BoardView {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.username = board.getUser().getUsername();
+        this.videoId = board.getVideoId();
     }
 }

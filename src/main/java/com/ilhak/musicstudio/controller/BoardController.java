@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -91,6 +92,8 @@ public class BoardController {
         return "board/form";
     }
 
+    
+
     @PostMapping("/form")
     public String formSubmit(@Valid Board board, BindingResult bindingResult, Authentication authentication) {
         boardValidator.validate(board, bindingResult);
@@ -100,5 +103,13 @@ public class BoardController {
         //board.setUser(user);
         boardService.save(userEmail, board);
         return "redirect:/board/list";
+    }
+
+    @PostMapping("/write")
+    public String write(Board board) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        Board savedBoard = boardService.save(userEmail, board);
+        return "redirect:/board/view/" + savedBoard.getId();
     }
 }

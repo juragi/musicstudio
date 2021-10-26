@@ -14,9 +14,10 @@ var vm = new Vue({
         modal = new bootstrap.Modal(document.getElementById("exampleModal"));
     },
     methods: {
-        showYoutubeModal: function(e,e1,e2) {
+        showYoutubeModal: function(e) {
             //
-            console.log(this, e, e1, e2);
+            e.preventDefault();
+            console.log(this, e);
             modal.show();
         },
         searchYoutube: function() {
@@ -40,7 +41,8 @@ var vm = new Vue({
             this.videoId = videoId;
             if(this.title === "") this.title = title;
             modal.hide();
-        }
+        },
+        
     }
 });
 
