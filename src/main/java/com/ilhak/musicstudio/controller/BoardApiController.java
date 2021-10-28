@@ -10,6 +10,8 @@ import com.ilhak.musicstudio.repository.BoardRepository;
 import com.ilhak.musicstudio.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +43,11 @@ public class BoardApiController {
         }
     }
 
-    @PostMapping("/boards")
+    @PostMapping("/board/write")
     Board newBoard(@RequestBody Board newBoard) {
-        return boardRepository.save(newBoard);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        return boardService.save(userEmail, newBoard);
     }
 
     @GetMapping("/boards/{id}")
@@ -77,5 +81,10 @@ public class BoardApiController {
     public YoutubeResponse searchVideo(@RequestBody YoutubeSearch youtubeSearch) {
         YoutubeResponse res = boardService.searchYoutube(youtubeSearch.getSearchKeyword(), youtubeSearch.getPageToken());
         return res;
+    }
+
+    @GetMapping("/board/random")
+    int getRandomBoardId() {
+        return boardRepository.getRandomBoardId();
     }
 }

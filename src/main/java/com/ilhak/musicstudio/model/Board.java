@@ -28,7 +28,7 @@ public class Board {
     private Long id;
 
     @NotNull
-    @Size(min=2, max=30, message="제목은 2자 이상, 30자 이하입니다.")
+    @Size(min=5, max=100, message="제목은 5자 이상, 100자 이하입니다.")
     private String title;
 
     //@NotNull

@@ -6,7 +6,8 @@ var vm = new Vue({
         username: null,
         title: null,
         content: null,
-        videoId: null
+        videoId: null,
+        randomPlay: true
     },
     mounted: function() {
         this.loadView(boardId);
@@ -31,6 +32,19 @@ var vm = new Vue({
             tag.src = "https://www.youtube.com/iframe_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        },
+        randomNext: function() {
+            var url = "/api/board/random";
+            fetch(url).then(res=> {
+                res.json().then(json => {
+                    if(res.ok) {
+                        location.href = "/board/view/" + json;
+                    } else {
+                        alert(json.message)
+                    }
+                    console.log(json);
+                });
+            })
         }
     }
 });
@@ -57,7 +71,10 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    console.log(event);
+    if(event.data === 0) {
+        if(vm.randomPlay) vm.randomNext();
+        else player.playVideo();
+    }
 }
 
 //fetch(url)

@@ -18,4 +18,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     
     @Query(value = "select * from board where title = ?1", nativeQuery = true)
     Board findByTitleNative(String title);
+
+    @Query(value = "select id from board order by rand() limit 0, 1", nativeQuery = true)
+    int getRandomBoardId();
 }

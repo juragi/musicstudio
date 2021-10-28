@@ -21,7 +21,13 @@
             <div class="video-player">
                 <div id="player"></div>
             </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="randomPlay">
+              <label class="form-check-label" for="flexSwitchCheckDefault" v-if="randomPlay">Random</label>
+              <label class="form-check-label" for="flexSwitchCheckDefault" v-else>Repeat</label>
+            </div>
             <div class="content">{{content}}</div>
+            
         </div>
         <div>Comment</div>
       </div>

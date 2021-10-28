@@ -15,22 +15,31 @@
 
       <div class="container" id="app">
         <h1>Write</h1>
-        <form th:action="@{/board/write}" method="POST">
+        <form th:action="@{/board/write}" method="POST" @submit.prevent>
           <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" id="title" v-model="title" required>
+            <input type="text" class="form-control" name="title" id="title"  v-model="title" required>
+            <div id="validationServerUsernameFeedback" class="invalid-feedback">
+              title error
+            </div>
           </div>
           <div class="mb-3">
             <label>Youtube Video <button class="btn btn-secondary btn-sm" @click="showYoutubeModal($event)">Find YouTube Video <i class="fab fa-youtube"></i></button></label>
             <input id="videoId" name="videoId" class="form-control" placeholer="Youtube VideoId" v-model="videoId" readonly required/>
+            <div id="" class="invalid-feedback">
+              videoId error
+            </div>
           </div>
           <div class="mb-3">
             <label for="content" class="form-label">Content: </label>
             <textarea id="content" name="content" class="form-control" rows="3" v-model="content"></textarea>
+            <div id="" class="invalid-feedback">
+              content error
+            </div>
           </div>
           <div class="text-end">
             <a class="btn btn-primary" th:href="@{/board/list}">Cancel</a>
-            <button class="btn btn-primary" type="submit" >Write</button>
+            <button class="btn btn-primary" type="submit" @click="submit">Write</button>
           </div>
         </form>
 

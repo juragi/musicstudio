@@ -75,7 +75,11 @@ public class BoardController {
     }
 
     @GetMapping("/write")
-    public String write(Model model) {
+    public String write(Model model, @RequestParam(required = false) Long id) {
+        Board board;
+        if(id == null) board = new Board();
+        else board = boardRepository.findById(id).orElse(null);
+        model.addAttribute("board", board);
         return "board/write";
     }
 
@@ -106,7 +110,9 @@ public class BoardController {
     }
 
     @PostMapping("/write")
-    public String write(Board board) {
+    public String write(@Valid Board board, BindingResult bindingResult) {
+        boardValidator.validate(board, bindingResult);
+        if(bindingResult.hasErrors()) return "board/write";
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = auth.getName();
         Board savedBoard = boardService.save(userEmail, board);

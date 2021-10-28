@@ -7,7 +7,8 @@ var vm = new Vue({
         videoId: "",
 
         searchKeyword: "",
-        searchResponse: {}
+        searchResponse: {},
+        submitting: false
     },
     mounted: function() {
         console.log(this);
@@ -42,7 +43,31 @@ var vm = new Vue({
             if(this.title === "") this.title = title;
             modal.hide();
         },
-        
+        submit: function() {
+            if(this.submitting) return;
+            this.submitting = true;
+            var url = "/api/board/write";
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify({title: this.title, videoId: this.videoId, content: this.content}),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => {
+                this.submitting = false;
+                console.log(res);
+                //return res.json()
+                res.json().then(json => {
+                    if(res.ok) {
+                        location.href = "/board/list";
+                    } else {
+                        alert(json.message)
+                    }
+                    console.log(json);
+                });
+            })
+        }
     }
 });
 
