@@ -1,11 +1,12 @@
-CREATE TABLE `member` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Email` varchar(128) NOT NULL,
-  `Name` varchar(64) NOT NULL,
-  `Password` varchar(256) DEFAULT NULL,
-  `EntryDate` datetime DEFAULT current_timestamp(),
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Email` (`Email`)
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `enabled` bit(1) NOT NULL,
+  `email` varchar(120) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_un` (`username`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `role` (
