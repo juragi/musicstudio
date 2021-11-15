@@ -118,4 +118,6 @@ public class BoardController {
         Board savedBoard = boardService.save(userEmail, board);
         return "redirect:/board/view/" + savedBoard.getId();
     }
+
+    
 }

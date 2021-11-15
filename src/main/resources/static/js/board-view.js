@@ -7,7 +7,9 @@ var vm = new Vue({
         title: null,
         content: null,
         videoId: null,
-        randomPlay: true
+        randomPlay: true,
+        commentText: "",
+        comments: []
     },
     mounted: function() {
         this.loadView(boardId);
@@ -21,6 +23,7 @@ var vm = new Vue({
                 this.videoId = board.videoId;
                 this.setupYoutubePlayer();
             });
+            this.loadComments(boardId);
         },
         getBoardView: function(boardId) {
             var url = "/api/boards/" + boardId;
@@ -45,6 +48,50 @@ var vm = new Vue({
                     console.log(json);
                 });
             })
+        },
+        loadComments: function() {
+            //
+            var url = "/api/board/comments";
+            url += "?boardId=" + boardId;
+            fetch(url).then(res=>res.json().then(json=> {
+                if(res.ok) {
+                    //
+                    this.comments = json;
+                } else {
+                    alert(res.message)
+                }
+            }))
+        },
+        leaveComment: function() {
+            if(this.commentText === "") {
+                alert("Comment is empty.");
+                return;
+            }
+            var url = "/api/boards/" + boardId + "/comment";
+            var data = {
+                content: this.commentText,
+                board_id: boardId
+            };
+            fetch(url, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {"Content-Type": "application/json"}
+            })
+            .then(res=>{
+                res.json().then(json => {
+                    if (res.ok) {
+                        //
+                        console.log(json);
+                        this.commentText = "";
+                        this.loadComments();
+                    } else {
+                        alert(json.message)
+                    }
+                })
+            })
+        },
+        formattedDate: (date, format) => {
+            return moment(date).format(format);
         }
     }
 });

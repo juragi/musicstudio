@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class Scheduler {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Scheduled(cron = "*/30 * * * * *")
+    //@Scheduled(cron = "*/30 * * * * *")
     public void test() {
         Date date = new Date();
         logger.info("log test {}", date);

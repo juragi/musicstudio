@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Entity
@@ -35,5 +37,6 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Board> boards = new ArrayList();
 }

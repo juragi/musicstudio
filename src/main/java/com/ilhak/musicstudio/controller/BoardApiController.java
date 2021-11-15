@@ -4,9 +4,12 @@ import java.util.List;
 
 import com.ilhak.musicstudio.model.Board;
 import com.ilhak.musicstudio.model.BoardView;
+import com.ilhak.musicstudio.model.Reply;
+import com.ilhak.musicstudio.model.ReplyView;
 import com.ilhak.musicstudio.model.YoutubeResponse;
 import com.ilhak.musicstudio.model.YoutubeSearch;
 import com.ilhak.musicstudio.repository.BoardRepository;
+import com.ilhak.musicstudio.repository.ReplyRepository;
 import com.ilhak.musicstudio.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ public class BoardApiController {
 
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @GetMapping("/boards")
     List<Board> all(@RequestParam(required = false, defaultValue = "") String title, 
@@ -86,5 +92,19 @@ public class BoardApiController {
     @GetMapping("/board/random")
     int getRandomBoardId() {
         return boardRepository.getRandomBoardId();
+    }
+
+    @PostMapping("/boards/{id}/comment")
+    public Reply postComment(@PathVariable Long id, @RequestBody Reply reply) {
+        //
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        //reply.setBoardId(id);
+        return boardService.postComment(id, reply, userEmail);
+    }
+
+    @GetMapping("/board/comments")
+    List<ReplyView> getComments(@RequestParam Long boardId) {
+        return boardService.getComments(boardId);
     }
 }

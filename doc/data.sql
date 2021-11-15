@@ -36,3 +36,18 @@ CREATE TABLE `board` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `board_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='board';
+
+-- mydb.reply definition
+
+CREATE TABLE `reply` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `board_id` bigint(20) NOT NULL,
+  `content` text NOT NULL,
+  `entry_date` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `reply_FK` (`user_id`),
+  KEY `reply_FK_1` (`board_id`),
+  CONSTRAINT `reply_FK` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `reply_FK_1` FOREIGN KEY (`board_id`) REFERENCES `board` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

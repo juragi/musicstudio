@@ -2,14 +2,18 @@ package com.ilhak.musicstudio.service;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ilhak.musicstudio.model.Board;
+import com.ilhak.musicstudio.model.Reply;
+import com.ilhak.musicstudio.model.ReplyView;
 import com.ilhak.musicstudio.model.User;
 import com.ilhak.musicstudio.model.YoutubeResponse;
 import com.ilhak.musicstudio.repository.BoardRepository;
+import com.ilhak.musicstudio.repository.ReplyRepository;
 import com.ilhak.musicstudio.repository.UserRepository;
 
 import org.apache.http.NameValuePair;
@@ -28,6 +32,9 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -65,6 +72,30 @@ public class BoardService {
             e.printStackTrace();
         }
         return response;
+    }
+
+    public Reply postComment(Long boardId, Reply reply, String userEmail) {
+        Board board = boardRepository.findById(boardId).orElse(null);
+        System.out.println(reply.getBoard());
+        reply.setBoard(board);
+        User user = userRepository.findByEmail(userEmail);
+        reply.setUser(user);
+        reply.setEntryDate(new Date());
+        Reply newReply;
+        try {
+            newReply = replyRepository.save(reply);
+        } catch(Exception e) {
+            newReply = new Reply();
+            e.printStackTrace();
+        }
+        return  newReply;
+    }
+
+    public List<ReplyView> getComments(Long boardId) {
+        List<Reply> boards = replyRepository.findByBoardId(boardId);
+        return boards.stream().map(x-> {
+            return new ReplyView(x);
+        }).collect(Collectors.toList());
     }
 
 }
