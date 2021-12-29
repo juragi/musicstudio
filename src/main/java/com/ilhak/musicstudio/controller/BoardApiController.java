@@ -13,6 +13,8 @@ import com.ilhak.musicstudio.repository.ReplyRepository;
 import com.ilhak.musicstudio.service.BoardService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ObjectUtils;
@@ -105,6 +107,16 @@ public class BoardApiController {
 
     @GetMapping("/board/comments")
     List<ReplyView> getComments(@RequestParam Long boardId) {
-        return boardService.getComments(boardId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        return boardService.getComments(boardId, userEmail);
+    }
+
+    @DeleteMapping("/board/comment/{id}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long id) {
+        //ResponseEntity res;
+        boardService.deleteComment(id);
+        ResponseEntity<String> res = new ResponseEntity<String>("success", HttpStatus.OK);
+        return res;
     }
 }

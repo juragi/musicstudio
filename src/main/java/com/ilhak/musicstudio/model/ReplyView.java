@@ -12,10 +12,12 @@ public class ReplyView {
     private String userName;
     private Date entryDate;
     private String content;
-    public ReplyView (Reply reply) {
+    private Boolean isLoginUser;
+    public ReplyView (Reply reply, Boolean isLoginUser) {
         this.id = reply.getId();
         this.userName = reply.getUser().getUsername();
         this.entryDate = reply.getEntryDate();
         this.content = reply.getContent();
+        this.isLoginUser = isLoginUser;
     }
 }

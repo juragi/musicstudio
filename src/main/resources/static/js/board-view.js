@@ -90,6 +90,27 @@ var vm = new Vue({
                 })
             })
         },
+        deleteComment: function(id) {
+            var url = "/api/board/comment/" + id;
+            fetch(url, {
+                method: "DELETE"
+            })
+            .then(res => {
+                console.log(res);
+                this.loadComments();
+                //res.json().then(json => {
+                //    if (res.ok) {
+                //        console.log(json);
+                //        this.loadComments();
+                //    } else {
+                //        alert(json.message);
+                //    }
+                //})
+            })
+            .catch(e=> {
+                console.log(e);
+            })
+        },
         formattedDate: (date, format) => {
             return moment(date).format(format);
         }

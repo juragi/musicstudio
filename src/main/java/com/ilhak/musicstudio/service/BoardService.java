@@ -91,11 +91,15 @@ public class BoardService {
         return  newReply;
     }
 
-    public List<ReplyView> getComments(Long boardId) {
+    public List<ReplyView> getComments(Long boardId, String loginUserEmail) {
         List<Reply> boards = replyRepository.findByBoardId(boardId);
+        User user = userRepository.findByEmail(loginUserEmail);
         return boards.stream().map(x-> {
-            return new ReplyView(x);
+            return new ReplyView(x, user.getId() == x.getUser().getId());
         }).collect(Collectors.toList());
     }
 
+    public void deleteComment(Long commentId) {
+        replyRepository.deleteById(commentId);
+    }
 }
